@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feline's Geburtstagsparty 🎉</title>
     
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Feline's Geburtstagsparty">
     <meta property="og:description" content="Du bist eingeladen zur großen Kino-Party! 13. Dezember 2025, 11:00 Uhr">
     <meta property="og:type" content="website">
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Optimized Font Loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -22,12 +28,21 @@
             --primary: #667eea;
             --secondary: #764ba2;
             --accent: #f093fb;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
+            --dark: #0f0f1e;
             --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --gradient-4: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            --gradient-glow: linear-gradient(135deg, #ff6ec4 0%, #7873f5 100%);
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
         
         html {
@@ -35,11 +50,56 @@
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--dark);
-            color: #333;
+            color: #fff;
             overflow-x: hidden;
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Page Load Animation */
+        body.loading {
+            overflow: hidden;
+        }
+        
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        
+        .loader-number {
+            font-size: clamp(4rem, 15vw, 8rem);
+            font-weight: 900;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse-glow 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(240, 147, 251, 0.6)); }
+            50% { filter: drop-shadow(0 0 40px rgba(240, 147, 251, 1)); }
         }
         
         /* Animated Background */
@@ -50,7 +110,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
         }
@@ -61,23 +121,88 @@
             100% { background-position: 0% 50%; }
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        /* Floating SVG Shapes */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.15;
         }
         
-        /* Hero Section */
+        .shape {
+            position: absolute;
+            animation: float-shape 20s ease-in-out infinite;
+        }
+        
+        .shape:nth-child(1) { 
+            top: 10%; 
+            left: 10%; 
+            animation-delay: 0s; 
+            animation-duration: 15s;
+        }
+        .shape:nth-child(2) { 
+            top: 60%; 
+            right: 10%; 
+            animation-delay: 3s;
+            animation-duration: 18s;
+        }
+        .shape:nth-child(3) { 
+            bottom: 20%; 
+            left: 15%; 
+            animation-delay: 6s;
+            animation-duration: 22s;
+        }
+        .shape:nth-child(4) { 
+            top: 30%; 
+            right: 20%; 
+            animation-delay: 9s;
+            animation-duration: 20s;
+        }
+        
+        @keyframes float-shape {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            25% { 
+                transform: translate(30px, -30px) rotate(90deg) scale(1.1);
+            }
+            50% { 
+                transform: translate(-20px, -60px) rotate(180deg) scale(0.9);
+            }
+            75% { 
+                transform: translate(40px, -40px) rotate(270deg) scale(1.05);
+            }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(16px, 5vw, 40px);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Hero Section - Magazine Style */
         .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 60px 20px 40px;
-            animation: fadeInUp 0.8s ease;
+            padding: clamp(60px, 10vh, 120px) 20px clamp(40px, 8vh, 80px);
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
         }
         
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -85,110 +210,144 @@
             }
         }
         
-        .hero h1 {
-            font-size: clamp(2rem, 7vw, 4rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+        .hero-title {
+            font-size: clamp(4rem, 15vw, 9rem);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
-            text-shadow: 0 0 40px rgba(255,255,255,0.5);
-            animation: glow 2s ease-in-out infinite alternate;
+            margin-bottom: clamp(20px, 4vh, 40px);
+            text-transform: uppercase;
+            position: relative;
+            animation: title-glow 3s ease-in-out infinite;
         }
         
-        .hero h2 {
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 30px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        @keyframes title-glow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 30px rgba(255,255,255,0.4));
+                transform: scale(1);
+            }
+            50% { 
+                filter: drop-shadow(0 0 60px rgba(255,255,255,0.7));
+                transform: scale(1.02);
+            }
         }
         
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 20px rgba(255,255,255,0.3)); }
-            to { filter: drop-shadow(0 0 40px rgba(255,255,255,0.6)); }
+        /* Interactive Age Badge */
+        .age-badge-wrapper {
+            position: relative;
+            margin: clamp(40px, 8vh, 80px) 0;
+            cursor: pointer;
         }
         
         .age-badge {
-            display: inline-block;
+            width: clamp(180px, 25vw, 280px);
+            height: clamp(180px, 25vw, 280px);
             background: var(--gradient-2);
-            color: white;
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 800;
-            width: clamp(150px, 20vw, 200px);
-            height: clamp(150px, 20vw, 200px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 30px auto;
-            box-shadow: 0 20px 60px rgba(240, 147, 251, 0.4);
-            animation: float 3s ease-in-out infinite;
+            font-size: clamp(5rem, 12vw, 10rem);
+            font-weight: 900;
+            color: white;
+            box-shadow: 
+                0 25px 80px rgba(240, 147, 251, 0.5),
+                0 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
+            animation: float-badge 4s ease-in-out infinite;
+        }
+        
+        @keyframes float-badge {
+            0%, 100% { 
+                transform: translateY(0) rotate(-3deg);
+            }
+            50% { 
+                transform: translateY(-20px) rotate(3deg);
+            }
+        }
+        
+        .age-badge-wrapper:hover .age-badge {
+            transform: scale(1.1) rotate(10deg) !important;
+            box-shadow: 
+                0 30px 100px rgba(240, 147, 251, 0.8),
+                0 0 0 30px rgba(255, 255, 255, 0.1);
         }
         
         .age-badge::before {
             content: '';
             position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
+            inset: -10px;
             background: var(--gradient-2);
             border-radius: 50%;
             z-index: -1;
-            filter: blur(20px);
+            filter: blur(30px);
             opacity: 0.6;
-            animation: pulse 2s ease-in-out infinite;
+            animation: pulse-badge 2.5s ease-in-out infinite;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-20px) rotate(3deg); }
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 0.8; }
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        .hero-subtitle {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: clamp(30px, 5vh, 60px);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 800px;
         }
         
-        /* Countdown */
+        /* Countdown - Magazine Style */
         .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(12px, 3vw, 24px);
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         .countdown-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 15px 25px;
-            min-width: 80px;
-            text-align: center;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: clamp(15px, 3vw, 25px);
+            transition: all 0.3s ease;
+        }
+        
+        .countdown-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
         }
         
         .countdown-value {
-            font-size: 2.5rem;
-            font-weight: 800;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 900;
             color: white;
             display: block;
+            line-height: 1;
         }
         
         .countdown-label {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.8);
+            font-size: clamp(0.75rem, 2.2vw, 0.9rem);
+            color: rgba(255,255,255,0.7);
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-top: 8px;
+            font-weight: 600;
         }
         
         /* Lazy Load Elements */
         .lazy-load {
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(60px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
@@ -197,24 +356,36 @@
             transform: translateY(0);
         }
         
-        /* Card Grid */
+        /* Section Spacing */
+        .section {
+            padding: clamp(60px, 10vh, 120px) 0;
+        }
+        
+        /* Cards with 3D Tilt Effect */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: clamp(20px, 4vw, 40px);
+            margin: clamp(40px, 8vh, 80px) 0;
         }
         
         .card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: clamp(30px, 5vw, 50px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        
+        /* 3D Tilt Effect für Desktop */
+        @media (hover: hover) and (pointer: fine) {
+            .card {
+                transition: all 0.15s ease;
+            }
         }
         
         .card::before {
@@ -222,174 +393,206 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--gradient-1);
+            right: 0;
+            height: 5px;
+            background: var(--gradient-glow);
+            border-radius: 30px 30px 0 0;
+        }
+        
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                        rgba(255,255,255,0.1) 0%, 
+                        transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .card:hover::after {
+            opacity: 1;
         }
         
         .card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            background: rgba(255, 255, 255, 0.2);
         }
         
+        /* Card Icon with Micro-Interaction */
         .card-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: clamp(3rem, 8vw, 4.5rem);
+            margin-bottom: clamp(15px, 3vh, 25px);
             display: inline-block;
-            animation: bounce 2s ease infinite;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
         }
         
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .card:hover .card-icon {
+            transform: scale(1.15) rotate(5deg);
         }
         
         .card h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: white;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            font-size: clamp(2.2rem, 5vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: clamp(15px, 3vh, 25px);
+            background: var(--gradient-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
         }
         
         .card p {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.95);
-            margin: 10px 0;
+            font-size: clamp(1.1rem, 3vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.9);
+            margin: clamp(10px, 2vh, 15px) 0;
+            line-height: 1.6;
         }
         
         .card strong {
             color: white;
-            font-weight: 600;
+            font-weight: 700;
         }
         
+        /* Map Button with Micro-Interaction */
         .map-button {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: var(--gradient-1);
             color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 12px 24px;
+            border-radius: 50px;
             text-decoration: none;
-            margin-top: 15px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            margin-top: 20px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-weight: 700;
             transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
         }
         
         .map-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
         }
         
-        /* Movie Section */
+        .map-button:active {
+            transform: translateY(-1px) scale(1);
+        }
+        
+        /* Movie Card */
         .movie-card {
             background: var(--gradient-3);
-            color: white;
-            border-radius: 24px;
-            padding: 40px;
-            margin: 40px 0;
-            box-shadow: 0 20px 60px rgba(79, 172, 254, 0.4);
+            border-radius: 30px;
+            padding: clamp(40px, 6vw, 60px);
+            margin: clamp(40px, 8vh, 80px) 0;
+            box-shadow: 0 30px 80px rgba(79, 172, 254, 0.4);
             position: relative;
             overflow: hidden;
         }
         
-        .movie-card::after {
-            content: '🍿';
+        .movie-card::before {
+            content: '';
             position: absolute;
-            font-size: 15rem;
-            opacity: 0.1;
-            right: -50px;
-            bottom: -50px;
-            animation: rotate 20s linear infinite;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="white" opacity="0.05"/></svg>');
+            animation: pattern-move 20s linear infinite;
         }
         
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes pattern-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
         }
         
         .movie-card h2 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: clamp(20px, 4vh, 30px);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
+            letter-spacing: -0.02em;
         }
         
         .movie-details {
             display: flex;
             align-items: center;
             gap: 15px;
-            font-size: 1.2rem;
+            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
             margin: 15px 0;
+            position: relative;
         }
         
-        /* Button Styles */
+        /* Button Styles with Enhanced Interactions */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 18px 40px;
-            font-size: 1.2rem;
-            font-weight: 700;
+            gap: 12px;
+            padding: clamp(18px, 3.5vw, 22px) clamp(36px, 7vw, 50px);
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-weight: 800;
             border-radius: 50px;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
             border: none;
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
         .btn::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: all 0.6s ease;
+            inset: 0;
+            background: rgba(255,255,255,0.2);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
         }
         
         .btn:hover::before {
-            width: 400px;
-            height: 400px;
+            transform: translateX(100%);
         }
         
-        .btn:hover {
-            transform: translateY(-5px);
+        .btn:active {
+            transform: scale(0.95);
         }
         
         .btn-primary {
             background: var(--gradient-2);
             color: white;
-            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
         }
         
         .btn-primary:hover {
-            box-shadow: 0 20px 40px rgba(245, 87, 108, 0.6);
+            box-shadow: 0 20px 50px rgba(245, 87, 108, 0.6);
+            transform: translateY(-3px);
         }
         
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 12px 30px;
-            font-size: 1rem;
-            max-width: 300px;
+            padding: clamp(14px, 3vw, 16px) clamp(32px, 6vw, 40px);
+            font-size: clamp(1rem, 2.8vw, 1.1rem);
+            max-width: 350px;
         }
         
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
         }
         
         .btn-text {
@@ -400,50 +603,56 @@
         /* CTA Section */
         .cta-section {
             text-align: center;
-            margin: 60px 0 40px;
+            margin: clamp(60px, 10vh, 100px) 0 clamp(40px, 8vh, 60px);
         }
         
         .primary-buttons {
             display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: clamp(16px, 3vw, 24px);
+            align-items: center;
+            margin-top: clamp(30px, 5vh, 40px);
+            margin-bottom: clamp(20px, 4vh, 30px);
         }
         
         .secondary-buttons {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: clamp(12px, 2.5vw, 18px);
+            align-items: center;
         }
         
         .rsvp-deadline {
-            margin-top: 30px;
-            padding: 20px;
+            margin-bottom: clamp(40px, 6vh, 60px);
+            padding: clamp(30px, 5vw, 40px);
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
             color: white;
-            font-size: 1.1rem;
-            max-width: 500px;
+            font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            font-weight: 600;
         }
         
         .rsvp-deadline strong {
-            color: #ffd700;
-            font-size: 1.2rem;
+            display: block;
+            background: var(--gradient-4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 900;
+            margin-top: 8px;
         }
         
-        /* Confetti Animation */
+        /* Confetti */
         .confetti {
             position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #f39c12;
-            position: fixed;
+            width: 12px;
+            height: 12px;
             top: -10px;
             z-index: 1000;
             animation: confetti-fall 3s linear forwards;
@@ -452,7 +661,7 @@
         
         @keyframes confetti-fall {
             to {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(100vh) rotate(720deg);
                 opacity: 0;
             }
         }
@@ -460,132 +669,163 @@
         /* Footer */
         .footer {
             text-align: center;
-            padding: 40px 20px;
-            color: rgba(255,255,255,0.8);
-            font-size: 1.1rem;
+            padding: clamp(60px, 10vh, 100px) 20px clamp(40px, 8vh, 60px);
+            color: rgba(255,255,255,0.9);
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 60px;
+            margin-top: clamp(60px, 10vh, 120px);
         }
         
         .emoji-row {
-            font-size: 2.5rem;
-            margin: 20px 0;
-            animation: wave 2s ease-in-out infinite;
+            font-size: clamp(3rem, 7vw, 4rem);
+            margin: clamp(20px, 4vh, 30px) 0;
+            letter-spacing: clamp(10px, 2vw, 20px);
         }
         
-        @keyframes wave {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+        .footer-main-text {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 900;
+            margin: clamp(20px, 4vh, 30px) 0;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            letter-spacing: -0.02em;
         }
         
         .footer-contact {
-            margin-top: 30px;
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.7);
+            margin-top: clamp(30px, 5vh, 50px);
+            font-size: clamp(1.05rem, 2.8vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.9);
         }
         
         .footer-contact a {
-            color: rgba(255, 255, 255, 0.9);
+            color: white;
             text-decoration: none;
-            transition: color 0.3s ease;
+            font-weight: 700;
+            margin: 0 clamp(12px, 3vw, 20px);
+            transition: all 0.3s ease;
+            display: inline-block;
         }
         
         .footer-contact a:hover {
-            color: white;
+            transform: translateY(-2px);
+            color: #f093fb;
         }
         
-        /* Floating Elements */
-        .floating-emoji {
-            position: fixed;
-            font-size: 3rem;
-            animation: floatRandom 10s ease-in-out infinite;
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 0;
+        .footer-contact a:active {
+            transform: scale(0.95);
         }
         
-        @keyframes floatRandom {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(30px, -30px) rotate(10deg); }
-            50% { transform: translate(-20px, -60px) rotate(-10deg); }
-            75% { transform: translate(40px, -40px) rotate(5deg); }
-        }
-        
-        .floating-emoji:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .floating-emoji:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
-        .floating-emoji:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 4s; }
-        .floating-emoji:nth-child(4) { bottom: 30%; right: 10%; animation-delay: 6s; }
-        
-        /* Scroll to Top Button */
+        /* Scroll to Top */
         .scroll-top {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
+            bottom: clamp(20px, 4vh, 30px);
+            right: clamp(20px, 4vw, 30px);
+            width: clamp(50px, 10vw, 60px);
+            height: clamp(50px, 10vw, 60px);
             background: var(--gradient-2);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             cursor: pointer;
             box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
             opacity: 0;
-            transform: translateY(100px);
-            transition: all 0.3s ease;
+            transform: translateY(100px) scale(0);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 100;
         }
         
         .scroll-top.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
         
         .scroll-top:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.1);
             box-shadow: 0 15px 40px rgba(245, 87, 108, 0.6);
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero { padding: 40px 15px 30px; }
-            .card { padding: 25px; }
-            .movie-card { padding: 30px; }
-            .card-grid { gap: 20px; }
-            .primary-buttons { flex-direction: column; align-items: center; }
-            .secondary-buttons { flex-direction: column; align-items: center; }
-            .btn { max-width: 100%; }
-            .countdown { gap: 10px; }
-            .countdown-item { padding: 10px 15px; min-width: 70px; }
-            .countdown-value { font-size: 2rem; }
+        .scroll-top:active {
+            transform: translateY(-3px) scale(1);
         }
         
+        /* Tablet Optimizations */
+        @media (min-width: 768px) {
+            .primary-buttons,
+            .secondary-buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .countdown {
+                gap: clamp(16px, 3vw, 30px);
+            }
+        }
+        
+        /* Desktop Optimizations */
+        @media (min-width: 1024px) {
+            .card-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Print Styles */
         @media print {
-            .bg-animation, .floating-emoji, .scroll-top, .secondary-buttons { display: none; }
-            body { background: white; }
-            .card, .movie-card { box-shadow: none; border: 1px solid #ddd; }
+            .bg-animation, .floating-shapes, .scroll-top, 
+            .secondary-buttons, .page-loader { 
+                display: none; 
+            }
+            body { background: white; color: black; }
+            .card, .movie-card { 
+                box-shadow: none; 
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
-<body>
+<body class="loading">
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <div class="loader-content">
+            <div class="loader-number">4</div>
+        </div>
+    </div>
+    
+    <!-- Animated Background -->
     <div class="bg-animation"></div>
     
-    <div class="floating-emoji">🎈</div>
-    <div class="floating-emoji">🎁</div>
-    <div class="floating-emoji">🎂</div>
-    <div class="floating-emoji">✨</div>
+    <!-- Floating SVG Shapes -->
+    <div class="floating-shapes">
+        <svg class="shape" width="80" height="80" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="35" fill="rgba(255,255,255,0.15)" />
+        </svg>
+        <svg class="shape" width="60" height="60" viewBox="0 0 60 60">
+            <rect x="10" y="10" width="40" height="40" rx="8" fill="rgba(255,255,255,0.12)" />
+        </svg>
+        <svg class="shape" width="70" height="70" viewBox="0 0 70 70">
+            <polygon points="35,10 60,60 10,60" fill="rgba(255,255,255,0.1)" />
+        </svg>
+        <svg class="shape" width="50" height="50" viewBox="0 0 50 50">
+            <circle cx="25" cy="25" r="20" fill="rgba(255,255,255,0.13)" />
+        </svg>
+    </div>
     
     <div class="scroll-top" id="scrollTop">↑</div>
     
     <div class="container">
         <!-- Hero Section -->
         <section class="hero">
-            <h1>PARTY TIME!</h1>
-            <div class="age-badge">4</div>
-            <h2>Feline wird 4 und lädt dich ein 🎉</h2>
+            <h1 class="hero-title">PARTY<br>TIME!</h1>
+            
+            <div class="age-badge-wrapper" id="badgeWrapper">
+                <div class="age-badge">4</div>
+            </div>
+            
+            <h2 class="hero-subtitle">Feline wird 4 und lädt dich ein 🎉</h2>
             
             <!-- Countdown -->
             <div class="countdown" id="countdown">
@@ -595,106 +835,111 @@
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-value" id="hours">0</span>
-                    <span class="countdown-label">Stunden</span>
+                    <span class="countdown-label">Std</span>
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-value" id="minutes">0</span>
-                    <span class="countdown-label">Minuten</span>
+                    <span class="countdown-label">Min</span>
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-value" id="seconds">0</span>
-                    <span class="countdown-label">Sekunden</span>
+                    <span class="countdown-label">Sek</span>
                 </div>
             </div>
         </section>
         
         <!-- Info Cards -->
-        <div class="card-grid">
-            <div class="card lazy-load">
-                <div class="card-icon">🎉</div>
-                <h2>Wann?</h2>
-                <p><strong>Samstag, 13. Dezember 2025</strong></p>
-                <p>11:00 - 14:00 Uhr</p>
+        <section class="section">
+            <div class="card-grid">
+                <div class="card lazy-load" data-tilt>
+                    <div class="card-icon">🎉</div>
+                    <h2>Wann?</h2>
+                    <p><strong>Samstag, 13. Dezember 2025</strong></p>
+                    <p>11:00 - 14:00 Uhr</p>
+                </div>
+                
+                <div class="card lazy-load" data-tilt>
+                    <div class="card-icon">🎬</div>
+                    <h2>Wo?</h2>
+                    <p><strong>Kino Bludenz</strong></p>
+                    <p>Wichnerstraße 15</p>
+                    <p>6700 Bludenz</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Kino+Bludenz+Wichnerstraße+15+6700+Bludenz" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="map-button">
+                        📍 In Maps öffnen
+                    </a>
+                </div>
+                
+                <div class="card lazy-load" data-tilt>
+                    <div class="card-icon">⏰</div>
+                    <h2>Programm</h2>
+                    <p><strong>11:00</strong> - Start der Party</p>
+                    <p><strong>12:45</strong> - Film (optional)</p>
+                    <p style="font-size: 0.95rem; opacity: 0.85;">Man kann jederzeit rein & raus</p>
+                    <p><strong>14:00</strong> - Ende der Party</p>
+                </div>
             </div>
-            
-            <div class="card lazy-load">
-                <div class="card-icon">🎬</div>
-                <h2>Wo?</h2>
-                <p><strong>Kino Bludenz</strong></p>
-                <p>Wichnerstraße 15</p>
-                <p>6700 Bludenz</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=Kino+Bludenz+Wichnerstraße+15+6700+Bludenz" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="map-button">
-                    📍 In Google Maps öffnen
-                </a>
-            </div>
-            
-            <div class="card lazy-load">
-                <div class="card-icon">⏰</div>
-                <h2>Programm</h2>
-                <p><strong>11:00</strong> - Start der Party</p>
-                <p><strong>12:45</strong> - Film (optional)</p>
-                <p style="font-size: 0.95rem; opacity: 0.9;">Man kann jederzeit rein & raus</p>
-                <p><strong>14:00</strong> - Ende der Party</p>
-            </div>
-        </div>
+        </section>
         
         <!-- Movie Section -->
-        <div class="movie-card lazy-load">
-            <h2>🐾 PAW PATROL 🐾</h2>
-            <div class="movie-details">
-                <span>🎬</span>
-                <span><strong>Rubbles Weihnachtswunsch</strong></span>
+        <section class="section">
+            <div class="movie-card lazy-load">
+                <h2>🐾 PAW PATROL 🐾</h2>
+                <div class="movie-details">
+                    <span>🎬</span>
+                    <span><strong>Rubbles Weihnachtswunsch</strong></span>
+                </div>
+                <div class="movie-details">
+                    <span>⏰</span>
+                    <span>Filmstart: 12:45 Uhr</span>
+                </div>
+                <div class="movie-details">
+                    <span>🍿</span>
+                    <span>Popcorn & Getränke inklusive!</span>
+                </div>
             </div>
-            <div class="movie-details">
-                <span>⏰</span>
-                <span>Filmstart: 12:45 Uhr</span>
-            </div>
-            <div class="movie-details">
-                <span>🍿</span>
-                <span>Popcorn & Getränke inklusive!</span>
-            </div>
-        </div>
+        </section>
         
         <!-- CTA Section -->
         <section class="cta-section lazy-load">
+            <div class="rsvp-deadline">
+                <p>Bitte gib uns Bescheid bis</p>
+                <strong>8. Dezember, 17:33 Uhr</strong>
+            </div>
+            
             <div class="primary-buttons">
                 <a href="#" id="whatsappBtn" class="btn btn-primary">
-                    <span class="btn-text">💬 Zusagen via WhatsApp</span>
+                    <span class="btn-text">✅ Zusagen via WhatsApp</span>
                 </a>
                 <a href="#" id="emailBtn" class="btn btn-primary">
-                    <span class="btn-text">✉️ Zusagen via E-Mail</span>
+                    <span class="btn-text">✅ Zusagen via E-Mail</span>
                 </a>
             </div>
             
             <div class="secondary-buttons">
                 <button id="calendarBtn" class="btn btn-secondary">
-                    <span class="btn-text">📅 Zum Kalender hinzufügen</span>
+                    <span class="btn-text">📅 Zum Kalender</span>
                 </button>
                 <button id="shareBtn" class="btn btn-secondary">
-                    <span class="btn-text">🔗 Einladung teilen</span>
+                    <span class="btn-text">🔗 Teilen</span>
                 </button>
-            </div>
-            
-            <div class="rsvp-deadline">
-                <p>⏰ Bitte gib uns bis <strong>8. Dezember, 17:33 Uhr</strong> Bescheid!</p>
             </div>
         </section>
         
         <!-- Footer -->
         <footer class="footer lazy-load">
-            <div class="emoji-row">🎈 🎁 🎂 🎊 🎉</div>
-            <p style="font-size: 1.5rem; font-weight: 600; margin: 20px 0;">
+            <div class="emoji-row">🎈🎁🎂🎊🎉</div>
+            <p class="footer-main-text">
                 Wir freuen uns auf dich!
             </p>
             <div class="footer-contact">
                 <p style="margin-bottom: 15px;">Fragen? Schreib uns gerne!</p>
                 <p>
-                    <a href="#" id="footerWhatsapp" style="margin: 0 15px;">💬 WhatsApp</a>
-                    <span style="color: rgba(255,255,255,0.4);">|</span>
-                    <a href="#" id="footerEmail" style="margin: 0 15px;">✉️ E-Mail</a>
+                    <a href="#" id="footerWhatsapp">💬 WhatsApp</a>
+                    <span style="color: rgba(255,255,255,0.3);">|</span>
+                    <a href="#" id="footerEmail">✉️ E-Mail</a>
                 </p>
             </div>
         </footer>
@@ -704,43 +949,94 @@
         // ============================================
         // KONFIGURATION - Hier deine Kontaktdaten eintragen!
         // ============================================
-        const WHATSAPP_NUMBER = '41763220834'; // Format: Ländercode ohne +, dann Nummer (z.B. 436641234567)
-        const EMAIL_ADDRESS = 'michael.k.cheah@gmail.com'; // Deine E-Mail-Adresse
+        const WHATSAPP_NUMBER = '43XXXXXXXXXXX'; // Format: Ländercode ohne +, dann Nummer
+        const EMAIL_ADDRESS = 'deine-email@example.com'; // Deine E-Mail-Adresse
         
         const WHATSAPP_MESSAGE = `Hallo! Wir kommen zu Feline's Geburtstagsparty am 13. Dezember 2025! 🎉
 
 Anzahl Personen (Kinder + Erwachsene): 
-`;
+
+Viele Grüße!`;
 
         const EMAIL_SUBJECT = 'Zusage: Feline\'s Geburtstagsparty';
         const EMAIL_BODY = `Hallo!
 
-Ich/Wir kommen zu Feline's Geburtstagsparty am 13. Dezember 2025! 🎉
+Wir kommen zu Feline's Geburtstagsparty am 13. Dezember 2025! 🎉
 
 Anzahl Personen (Kinder + Erwachsene): 
-`;
+
+Viele Grüße!`;
         
         // ============================================
-        // Lazy Load Animation mit Intersection Observer
+        // Page Load Animation
+        // ============================================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.page-loader').classList.add('hidden');
+                document.body.classList.remove('loading');
+            }, 1200);
+        });
+        
+        // ============================================
+        // Lazy Load Animation
         // ============================================
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: 0.15,
+            rootMargin: '0px 0px -80px 0px'
         };
         
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                    }, index * 100);
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
         
-        // Alle Elemente mit lazy-load Klasse beobachten
         document.addEventListener('DOMContentLoaded', () => {
             const lazyElements = document.querySelectorAll('.lazy-load');
             lazyElements.forEach(el => observer.observe(el));
+        });
+        
+        // ============================================
+        // 3D Tilt Effect for Cards (Desktop only)
+        // ============================================
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            const cards = document.querySelectorAll('[data-tilt]');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                    
+                    // Update spotlight position
+                    card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+                    card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                });
+            });
+        }
+        
+        // ============================================
+        // Interactive Badge - Easter Egg
+        // ============================================
+        document.getElementById('badgeWrapper').addEventListener('click', () => {
+            createConfetti();
         });
         
         // ============================================
@@ -771,36 +1067,22 @@ Anzahl Personen (Kinder + Erwachsene):
         setInterval(updateCountdown, 1000);
         
         // ============================================
-        // WhatsApp Button
+        // Button Handlers
         // ============================================
         document.getElementById('whatsappBtn').addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Konfetti Animation
             createConfetti();
-            
-            // WhatsApp Link öffnen
             const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
             window.open(whatsappURL, '_blank');
         });
         
-        // ============================================
-        // Email Button
-        // ============================================
         document.getElementById('emailBtn').addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Konfetti Animation
             createConfetti();
-            
-            // Email öffnen
             const mailtoURL = `mailto:${EMAIL_ADDRESS}?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(EMAIL_BODY)}`;
             window.location.href = mailtoURL;
         });
         
-        // ============================================
-        // Footer Contact Links
-        // ============================================
         document.getElementById('footerWhatsapp').addEventListener('click', function(e) {
             e.preventDefault();
             const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}`;
@@ -814,11 +1096,11 @@ Anzahl Personen (Kinder + Erwachsene):
         });
         
         // ============================================
-        // Konfetti Animation
+        // Confetti Animation
         // ============================================
         function createConfetti() {
-            const colors = ['#f39c12', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#f093fb'];
-            const confettiCount = 50;
+            const colors = ['#f39c12', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#f093fb', '#ffd700'];
+            const confettiCount = 60;
             
             for (let i = 0; i < confettiCount; i++) {
                 setTimeout(() => {
@@ -826,17 +1108,19 @@ Anzahl Personen (Kinder + Erwachsene):
                     confetti.className = 'confetti';
                     confetti.style.left = Math.random() * window.innerWidth + 'px';
                     confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    confetti.style.animationDelay = Math.random() * 0.3 + 's';
                     confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.width = (Math.random() * 8 + 8) + 'px';
+                    confetti.style.height = confetti.style.width;
                     document.body.appendChild(confetti);
                     
-                    setTimeout(() => confetti.remove(), 3000);
-                }, i * 30);
+                    setTimeout(() => confetti.remove(), 3500);
+                }, i * 25);
             }
         }
         
         // ============================================
-        // Kalender Export (ICS-Datei)
+        // Calendar Export
         // ============================================
         document.getElementById('calendarBtn').addEventListener('click', function() {
             const icsContent = `BEGIN:VCALENDAR
@@ -868,7 +1152,7 @@ END:VCALENDAR`;
         });
         
         // ============================================
-        // Share Button (Web Share API)
+        // Share Function
         // ============================================
         document.getElementById('shareBtn').addEventListener('click', async function() {
             const shareData = {
@@ -891,7 +1175,6 @@ END:VCALENDAR`;
         });
         
         function fallbackShare() {
-            // Kopiere URL in Zwischenablage
             navigator.clipboard.writeText(window.location.href).then(() => {
                 alert('Link wurde in die Zwischenablage kopiert! 📋');
             }).catch(() => {
@@ -900,12 +1183,12 @@ END:VCALENDAR`;
         }
         
         // ============================================
-        // Scroll to Top Button
+        // Scroll to Top
         // ============================================
         const scrollTopBtn = document.getElementById('scrollTop');
         
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
+            if (window.scrollY > 400) {
                 scrollTopBtn.classList.add('visible');
             } else {
                 scrollTopBtn.classList.remove('visible');
